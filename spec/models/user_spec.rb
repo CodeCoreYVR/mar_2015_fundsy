@@ -6,15 +6,16 @@ require 'rails_helper'
 # This way it can be used to group things together.
 # there are aliases for describe such as 'context'
 RSpec.describe User, type: :model do
+  def valid_attributes(new_attributes = {})
+    attributes = {first_name: "Tam", 
+                  last_name: "Kbeili", 
+                  email: "tam@codecore.ca",
+                  password: "abcd1234"}
+    attributes.merge(new_attributes)
+  end
 
   describe "Validations" do
 
-    def valid_attributes(new_attributes = {})
-      attributes = {first_name: "Tam", 
-                    last_name: "Kbeili", 
-                    email: "tam@codecore.ca"}
-      attributes.merge(new_attributes)
-    end
 
     # "it" is used to define a test scenario (or test case)
     # "specify" is an alias for it.
@@ -40,7 +41,26 @@ RSpec.describe User, type: :model do
       user = User.new(valid_attributes(email: "blabla"))
       expect(user).to be_invalid
     end
+  end
 
+  describe "Hashing password" do
+    it "generates password digest if given a password" do
+      user = User.new valid_attributes
+      user.save
+      expect(user.password_digest).to be
+    end
+  end
+
+  describe ".full_name" do
+    it "returns the concatenated first name and last name if both are given" do
+      u = User.new valid_attributes
+      expect(u.full_name).to eq("#{valid_attributes[:first_name]} #{valid_attributes[:last_name]}")
+    end
+
+    it "returns the first name only if only first name is given" do
+      u = User.new valid_attributes({last_name: nil})
+      expect(u.full_name).to eq(valid_attributes[:first_name])
+    end
   end
 
 end
