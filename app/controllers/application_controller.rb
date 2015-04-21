@@ -7,4 +7,8 @@ class ApplicationController < ActionController::Base
     redirect_to new_session_path, alert: "Please sign in" unless session[:user_id].present?
   end
 
+  def current_user
+    @current_user ||= User.find session[:user_id]
+  end
+
 end
