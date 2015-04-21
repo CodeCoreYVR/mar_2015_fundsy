@@ -2,7 +2,9 @@ require 'rails_helper'
 
 RSpec.describe SessionsController, type: :controller do
 
-  let(:user) { FactoryGirl.create(:user) }
+  # create(:user) comes from FactoryGirl. This is short for
+  # doing: FactoryGirl.create(:user)
+  let(:user) { create(:user) }
 
   describe "#new" do
     before { get :new }
@@ -70,8 +72,16 @@ RSpec.describe SessionsController, type: :controller do
       valid_request
       expect(session[:user_id]).to be_nil
     end
-    it "sets a flash message"
-    it "redirects to root page"
+
+    it "sets a flash message" do
+      valid_request
+      expect(flash[:notice]).to be
+    end
+
+    it "redirects to root page" do
+      valid_request
+      expect(response).to redirect_to root_path
+    end
   end
 
 end

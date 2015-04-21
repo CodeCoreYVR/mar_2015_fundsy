@@ -57,7 +57,6 @@ RSpec.describe UsersController, type: :controller do
         valid_request
         expect(response).to redirect_to(root_path)
       end
-
     end
 
     context "with invalid parameters" do
@@ -81,7 +80,6 @@ RSpec.describe UsersController, type: :controller do
         invalid_request
         expect(flash[:alert]).to be
       end
-
     end
   end
 end

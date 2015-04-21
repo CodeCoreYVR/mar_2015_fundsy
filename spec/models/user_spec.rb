@@ -7,6 +7,10 @@ require 'rails_helper'
 # there are aliases for describe such as 'context'
 RSpec.describe User, type: :model do
   def valid_attributes(new_attributes = {})
+    # We can also do
+    # attributes = FactoryGirl.attributes_for(:user)
+    # or
+    # attributes = attributes_for(:user)
     attributes = {first_name: "Tam", 
                   last_name: "Kbeili", 
                   email: "tam@codecore.ca",
