@@ -17,13 +17,7 @@ RSpec.describe UsersController, type: :controller do
   describe "#create" do
 
     context "with valid parameters" do
-      it "creates a user in the database" do
-        # this will call User.count before what's inside the expect block
-        # which is in this case (post :create ...)
-        # then it will call "User.count" after that.
-        # it will take: count after - count before
-        # and compare it to the value you gave (in this case 1)
-        expect do
+      def valid_request
           post :create, {user: {
                           first_name: "Tam",
                           last_name: "Kbeili",
@@ -31,7 +25,15 @@ RSpec.describe UsersController, type: :controller do
                           password: "abcd1234",
                           password_confirmation: "abcd1234"
                         }}
-        end.to change { User.count }.by(1)
+      end
+
+      it "creates a user in the database" do
+        # this will call User.count before what's inside the expect block
+        # which is in this case (post :create ...)
+        # then it will call "User.count" after that.
+        # it will take: count after - count before
+        # and compare it to the value you gave (in this case 1)
+        expect { valid_request }.to change { User.count }.by(1)
 
         # before_count = User.count
         # post :create, {user: {
@@ -46,9 +48,39 @@ RSpec.describe UsersController, type: :controller do
         # expect(difference).to eq(1)
       end
 
+      it "sets a flash message" do
+        valid_request
+        expect(flash[:notice]).to be
+      end
+
+      it "redirects to the root path of the application" do
+        valid_request
+        expect(response).to redirect_to(root_path)
+      end
+
     end
 
     context "with invalid parameters" do
+      def invalid_request
+          post :create, {user: {
+                          password: "abcd1234",
+                          password_confirmation: "abcd1234"
+                        }}
+      end
+
+      it "doesn't create a user record in the database" do
+        expect { invalid_request }.to_not change { User.count }
+      end
+
+      it "renders the new template" do
+        invalid_request
+        expect(response).to render_template(:new)
+      end
+
+      it "sets an alert flash message" do
+        invalid_request
+        expect(flash[:alert]).to be
+      end
 
     end
   end

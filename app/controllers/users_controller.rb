@@ -6,8 +6,13 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new user_params
-    @user.save
-    render nothing: true
+    if @user.save
+      flash[:notice] = "Account created!"
+      redirect_to root_path
+    else
+      flash[:alert] = "Account wasn't created!"
+      render :new
+    end
   end
 
   private
