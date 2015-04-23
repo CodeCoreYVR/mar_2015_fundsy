@@ -1,5 +1,5 @@
 class CampaignsController < ApplicationController
-  before_action :authenticate_user!, only: [:new, :create]
+  before_action :authenticate_user!, only: [:new, :create, :edit]
 
   def index
     @campaigns = Campaign.all
@@ -19,6 +19,14 @@ class CampaignsController < ApplicationController
       flash[:alert] = "Campaign not created!"
       render :new
     end
+  end
+
+  def show
+    @campaign = Campaign.find params[:id]
+  end
+
+  def edit
+    @campaign = current_user.campaigns.find params[:id]
   end
 
   private
