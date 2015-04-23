@@ -1,5 +1,5 @@
 class CampaignsController < ApplicationController
-  before_action :authenticate_user!, only: [:new, :create, :edit, :update]
+  before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
 
   def index
     @campaigns = Campaign.all
@@ -37,6 +37,12 @@ class CampaignsController < ApplicationController
       flash[:alert] = "campaign wasn't updated"
       render :edit
     end
+  end
+
+  def destroy
+    @campaign = current_user.campaigns.find params[:id]
+    @campaign.destroy
+    redirect_to campaigns_path, notice: "Campaign deleted"
   end
 
   private

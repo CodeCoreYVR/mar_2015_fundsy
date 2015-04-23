@@ -217,5 +217,48 @@ RSpec.describe CampaignsController, type: :controller do
     end
   end
 
+  describe "#destroy" do
+    context "with user signed in" do
+      before { login(user) }
+
+      context "with non-owner signed in" do
+        it "throws an error" do
+          expect { delete :destroy, id: campaign.id }.to raise_error
+        end
+      end
+
+      context "with owner signed in" do
+        it "reduces the number of campaigns in the database by 1" do
+          campaign_1
+          expect { delete :destroy, id: campaign_1.id }.to change { Campaign.count }.by(-1)
+          # the code above essentially does the following
+          # count_before = Campaign.count
+          # delete :destroy, id: campaign_1.id
+          # count_after  = Campaign.count
+          # expect(count_after - count_before).to eq(-1)
+
+        end
+
+        it "redirects to the campaigns index page" do
+          delete :destroy, id: campaign_1.id
+          expect(response).to redirect_to campaigns_path
+        end
+
+        it "sets a flash message" do
+          delete :destroy, id: campaign_1.id
+          expect(flash[:notice]).to be
+        end
+      end
+    end
+
+    context "with user not signed in" do
+      it "redirects to the sign in page" do
+        delete :destroy, id: campaign.id
+        expect(response).to redirect_to(new_session_path)
+      end
+    end
+
+  end
+
 
 end
