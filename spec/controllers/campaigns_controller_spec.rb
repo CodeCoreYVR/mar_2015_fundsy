@@ -150,4 +150,72 @@ RSpec.describe CampaignsController, type: :controller do
     end
   end
 
+  describe "#update" do
+    context "with user not signed in" do
+      it "redirects new session path" do
+        patch :update, id: campaign.id, campaign: {title: "some valid title"}
+        expect(response).to redirect_to(new_session_path)
+      end
+    end
+
+    context "with owner user signed in" do
+      before { login(user) }
+
+      def valid_attributes(new_attributes = {})
+        attributes_for(:campaign).merge(new_attributes)
+      end
+
+      context "with valid attributes" do
+          
+        before do
+          patch :update, id:       campaign_1.id, 
+                         campaign: valid_attributes(title: "new title")
+        end
+
+        it "updates the record in the database" do
+          expect(campaign_1.reload.title).to eq "new title"
+        end
+
+        it "redirects to the show page" do
+          expect(response).to redirect_to(campaign_path(campaign_1))
+        end
+
+        it "sets a flash message" do
+          expect(flash[:notice]).to be
+        end
+      end
+
+      context "with invalid attributes" do
+          
+        before do
+          patch :update, id:       campaign_1.id, 
+                         campaign: valid_attributes(title: "")
+        end
+
+        it "doesn't update the record in the database" do
+          expect(campaign_1.reload.title).to_not eq("")
+        end
+
+        it "renders the edit template" do
+          expect(response).to render_template(:edit)
+        end
+
+        it "sets a flash message" do
+          expect(flash[:alert]).to be
+        end
+      end
+    end
+
+    context "with non-owner user signed in" do
+      before { login(user) }
+
+      it "raises an error" do
+        expect do
+          patch :update, id: campaign.id, campaign: attributes_for(:campaign)
+        end.to raise_error
+      end
+    end
+  end
+
+
 end

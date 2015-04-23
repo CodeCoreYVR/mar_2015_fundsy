@@ -1,5 +1,5 @@
 class CampaignsController < ApplicationController
-  before_action :authenticate_user!, only: [:new, :create, :edit]
+  before_action :authenticate_user!, only: [:new, :create, :edit, :update]
 
   def index
     @campaigns = Campaign.all
@@ -27,6 +27,16 @@ class CampaignsController < ApplicationController
 
   def edit
     @campaign = current_user.campaigns.find params[:id]
+  end
+
+  def update
+    @campaign = current_user.campaigns.find params[:id]
+    if @campaign.update campaign_params
+      redirect_to @campaign, notice: "campaign updated"
+    else
+      flash[:alert] = "campaign wasn't updated"
+      render :edit
+    end
   end
 
   private
