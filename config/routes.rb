@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
 
+  resources :groups do
+    resources :memberships
+  end
+
   get 'welcome/index'
 
   resources :campaigns do

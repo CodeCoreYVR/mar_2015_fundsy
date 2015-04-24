@@ -3,6 +3,10 @@ class User < ActiveRecord::Base
 
   has_many :campaigns, dependent: :nullify
   has_many :pledges, dependent: :nullify
+  has_many :groups, dependent: :destroy
+
+  has_many :memberships, dependent: :destroy
+  has_many :joined_groups, through: :memberships, source: :group
 
   validates :email, presence: true, uniqueness: true, email: true
   validates :first_name, presence: true

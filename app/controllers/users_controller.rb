@@ -7,6 +7,11 @@ class UsersController < ApplicationController
   def create
     @user = User.new user_params
     if @user.save
+      Membership.pending.where(email: @user.email).each do |m|
+        m.approved = true
+        m.user     = @user
+        m.save
+      end
       flash[:notice] = "Account created!"
       redirect_to root_path
     else
