@@ -40,6 +40,7 @@ group :development, :test do
   gem "capybara"
   gem "launchy"
 
+  gem "simplecov", require: false
 
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'

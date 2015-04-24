@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.feature "Campaigns", type: :feature do
+  let(:user) { create(:user) }
+
   describe "Home Page" do
     it "displays a welcome message" do
       visit root_path
@@ -27,6 +29,27 @@ RSpec.feature "Campaigns", type: :feature do
       end
 
     end
+  end
 
+  describe "Creating campaigns" do
+
+    it "creates a campaign, redirects to show page and displays message" do
+      login_via_web(user)
+
+      visit new_campaign_path
+
+      valid_attributes = attributes_for(:campaign)
+
+      fill_in "Title", with: valid_attributes[:title]
+      fill_in "Description", with: valid_attributes[:description]
+      fill_in "Goal", with: valid_attributes[:goal]
+
+      click_button "Create Campaign"
+
+      expect(Campaign.count).to eq(1)
+      expect(current_path).to eq(campaign_path(Campaign.last))
+      expect(page).to have_content /Campaign Created/i
+
+    end
   end
 end

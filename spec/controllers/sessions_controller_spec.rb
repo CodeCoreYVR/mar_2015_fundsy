@@ -12,17 +12,13 @@ RSpec.describe SessionsController, type: :controller do
     it "renders the new template" do
       expect(response).to render_template(:new)
     end
-
-    it "sets a user instance variable" do
-      expect(assigns(:user)).to be_a_new(User)
-    end
   end
 
   describe "#create" do
     context "successful login" do
       def valid_request           
-        post :create, user: {email:    user.email,
-                             password: user.password}
+        post :create,  {email:    user.email,
+                        password: user.password}
       end
 
       before { valid_request }
@@ -42,8 +38,8 @@ RSpec.describe SessionsController, type: :controller do
 
     context "unsuccessful login" do
       def invalid_request           
-        post :create, user: {email:    user.email,
-                             password: user.password + "asdf"}
+        post :create, email:    user.email,
+                      password: user.password + "asdf"
       end
 
       it "doesn't set the session user_id" do

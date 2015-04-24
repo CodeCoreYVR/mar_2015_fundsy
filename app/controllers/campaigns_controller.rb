@@ -13,7 +13,7 @@ class CampaignsController < ApplicationController
     @campaign = Campaign.new campaign_params
     @campaign.user = current_user
     if @campaign.save
-      flash[:notice] = "Campaign Created"
+      flash[:notice] = "Campaign Created!"
       redirect_to campaign_path(@campaign)
     else
       flash[:alert] = "Campaign not created!"
