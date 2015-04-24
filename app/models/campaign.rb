@@ -6,4 +6,7 @@ class Campaign < ActiveRecord::Base
   validates :description, presence: true
 
   validates :goal, numericality: {greater_than_or_equal_to: 10}
+
+  scope :most_recent, lambda {|x| order("created_at DESC").limit(x) }
+
 end
