@@ -3,5 +3,12 @@
   <%= f.input :description %>
   <%= f.input :goal %>
   <%= f.input :ends_on %>
+  <h2>Reward Levels</h2>
+  <%= f.simple_fields_for :reward_levels do |rl| %>
+    <%= rl.input :amount %>
+    <%= rl.input :description %>
+    <%= rl.input :_destroy, as: :boolean, label: "Delete" %>
+    <hr>
+  <% end %>
   <%= f.submit %>
 <% end %>
