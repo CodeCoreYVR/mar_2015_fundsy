@@ -1,6 +1,7 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    aasm (4.1.0)
     actionmailer (4.2.1)
       actionpack (= 4.2.1)
       actionview (= 4.2.1)
@@ -110,6 +111,7 @@ GEM
     quiet_assets (1.1.0)
       railties (>= 3.1, < 5.0)
     rack (1.6.0)
+    rack-cors (0.2.9)
     rack-test (0.6.3)
       rack (>= 1.0)
     rails (4.2.1)
@@ -205,6 +207,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  aasm
   awesome_print
   bcrypt (~> 3.1.7)
   bootstrap-sass
@@ -222,6 +225,7 @@ DEPENDENCIES
   launchy
   pg
   quiet_assets
+  rack-cors
   rails (= 4.2.1)
   rspec-rails
   sass-rails (~> 5.0)

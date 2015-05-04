@@ -35,5 +35,16 @@ module Fundsy
     config.autoload_paths +=
         Dir[Rails.root.join("app", "validators", "*").to_s]
 
+
+    # this will allow the app to accept AJAX requests
+    # from any other website with Http verbs: :get, :post, :options
+    config.middleware.insert_before 0, "Rack::Cors" do
+      allow do
+        origins '*'
+        resource '*', :headers => :any, :methods => [:get, :post, :options]
+      end
+    end
+
+
   end
 end

@@ -1,6 +1,8 @@
 source 'https://rubygems.org'
 
 
+gem 'rack-cors', :require => 'rack/cors'
+
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.1'
 # Use postgresql as the database for Active Record
@@ -18,6 +20,8 @@ gem 'coffee-rails', '~> 4.1.0'
 gem 'jquery-rails'
 
 gem "cocoon"
+
+gem 'aasm'
 
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks'

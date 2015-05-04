@@ -1,4 +1,6 @@
 class Campaign < ActiveRecord::Base
+  include AASM
+
   belongs_to :user
   has_many :pledges, dependent: :nullify
 
@@ -22,5 +24,31 @@ class Campaign < ActiveRecord::Base
   validates :goal, numericality: {greater_than_or_equal_to: 10}
 
   scope :most_recent, lambda {|x| order("created_at DESC").limit(x) }
+
+  aasm whiny_transitions: false do
+    state :draft, initial: true
+    state :published
+    state :cancelled
+    state :unfundedt
+    state :funded
+
+    event :publish do
+      transitions from: :draft, to: :published
+    end
+
+    event :cancel do
+      transitions from: [:draft, :published], to: :cancelled
+    end
+
+    event :fail do
+      transitions from: :published, to: :unfunded
+    end
+
+    event :fund do
+      transitions from: :published, to: :funded
+    end
+
+  end
+
 
 end

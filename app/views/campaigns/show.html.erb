@@ -10,6 +10,10 @@
   <% if can? :destroy, @campaign %>
     <%= link_to "Delete", @campaign, class: "btn btn-danger", method: :delete, data: {confirm: "Are you sure?"} %>
   <% end %>
+
+  <% if (can? :publish, @campaign) && @campaign.draft? %>
+    <%= link_to "Publish", campaign_publishings_path(@campaign), class: "btn btn-info", method: :post, data: {confirm: "Are you sure you want to publish this campaign?"} %>
+  <% end %>
 </div>
 <div class="col-md-3">
   <% @campaign.reward_levels.each do |reward_level| %>

@@ -3,6 +3,10 @@ class CampaignsController < ApplicationController
 
   def index
     @campaigns = Campaign.all
+    respond_to do |format|
+      format.html
+      format.json { render json: @campaigns }
+    end
   end
 
   def new
@@ -24,6 +28,11 @@ class CampaignsController < ApplicationController
 
   def show
     @campaign = Campaign.find params[:id]
+    respond_to do |format|
+      format.html
+      format.json {render json: {campaign:      @campaign, 
+                                 reward_levels: @campaign.reward_levels} }
+    end
   end
 
   def edit
