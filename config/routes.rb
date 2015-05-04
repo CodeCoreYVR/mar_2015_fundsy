@@ -7,8 +7,13 @@ Rails.application.routes.draw do
   end
 
   get 'welcome/index'
+  
+  resources :discussions do
+    resources :comments, only: [:create]
+  end
 
   resources :campaigns do
+    resources :comments, only: [:create]
     resources :pledges, only: [:create, :destroy]
     resources :publishings, only: [:create]
   end

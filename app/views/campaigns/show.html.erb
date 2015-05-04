@@ -29,6 +29,16 @@
   <% end %>
 </div>
 
+<h2>Comments</h2>
+<%= simple_form_for [@campaign, @comment] do |f| %>
+  <%= f.input :body %>
+  <%= f.submit "Save", class: "btn btn-primary" %>
+<% end %>
+<hr>
+<% @campaign.comments.each do |comment| %>
+  <div class="well"><%= comment.body %></div>
+<% end %>
+
 
 <script type="text/javascript">
   $(document).ready(function(){

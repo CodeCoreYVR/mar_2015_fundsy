@@ -6,6 +6,8 @@ class Campaign < ActiveRecord::Base
 
   has_many :reward_levels, dependent: :destroy
 
+  has_many :comments, as: :commentable, dependent: :destroy
+
   geocoded_by :address
   after_validation :geocode
 
