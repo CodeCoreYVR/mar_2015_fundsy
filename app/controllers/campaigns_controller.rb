@@ -2,7 +2,8 @@ class CampaignsController < ApplicationController
   before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
 
   def index
-    @campaigns = Campaign.all
+    @campaigns = Campaign.limit(30)
+    @recent_campaigns = Campaign.most_recent(3)
     respond_to do |format|
       format.html
       format.json { render json: @campaigns }
@@ -18,6 +19,7 @@ class CampaignsController < ApplicationController
     @campaign = Campaign.new campaign_params
     @campaign.user = current_user
     if @campaign.save
+      expire_fragment("recent_campaigns")
       flash[:notice] = "Campaign Created!"
       redirect_to campaign_path(@campaign)
     else
@@ -27,7 +29,8 @@ class CampaignsController < ApplicationController
   end
 
   def show
-    @campaign = Campaign.find params[:id]
+    @campaign = Campaign.includes(:comments, :reward_levels).
+                      references(:comments, :reward_levels).find(params[:id])
     @comment  = Comment.new
     respond_to do |format|
       format.html

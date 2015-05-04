@@ -1,61 +1,62 @@
-<div class="col-md-9">
-  <h1><%= @campaign.title %></h1>
-  <p><%= @campaign.description %></p>
-  <p>Goal: <%= number_to_currency(@campaign.goal) %></p>
-  <p>Ends On: <%= @campaign.ends_on.strftime("%Y-%b-%d") %></p>
-  <% if can? :edit, @campaign %>
-    <%= link_to "Edit", edit_campaign_path(@campaign), class: "btn btn-info" %>
-  <% end %>
+<% cache @campaign do %>
+  <div class="col-md-9">
+    <h1><%= @campaign.title %></h1>
+    <p><%= @campaign.description %></p>
+    <p>Goal: <%= number_to_currency(@campaign.goal) %></p>
+    <p>Ends On: <%= @campaign.ends_on.strftime("%Y-%b-%d") %></p>
+    <% if can? :edit, @campaign %>
+      <%= link_to "Edit", edit_campaign_path(@campaign), class: "btn btn-info" %>
+    <% end %>
 
-  <% if can? :destroy, @campaign %>
-    <%= link_to "Delete", @campaign, class: "btn btn-danger", method: :delete, data: {confirm: "Are you sure?"} %>
-  <% end %>
+    <% if can? :destroy, @campaign %>
+      <%= link_to "Delete", @campaign, class: "btn btn-danger", method: :delete, data: {confirm: "Are you sure?"} %>
+    <% end %>
 
-  <% if (can? :publish, @campaign) && @campaign.draft? %>
-    <%= link_to "Publish", campaign_publishings_path(@campaign), class: "btn btn-info", method: :post, data: {confirm: "Are you sure you want to publish this campaign?"} %>
-  <% end %>
+    <% if (can? :publish, @campaign) && @campaign.draft? %>
+      <%= link_to "Publish", campaign_publishings_path(@campaign), class: "btn btn-info", method: :post, data: {confirm: "Are you sure you want to publish this campaign?"} %>
+    <% end %>
 
-  <div style='width: 800px;'>
-    <div id="map" style='width: 800px; height: 400px;'></div>
+    <div style='width: 800px;'>
+      <div id="map" style='width: 800px; height: 400px;'></div>
+    </div>
+
+  </div>
+  <div class="col-md-3">
+    <% @campaign.reward_levels.each do |reward_level| %>
+      <div class="well">
+        <h3><%= number_to_currency(reward_level.amount) %></h3>
+        <p><%= reward_level.description %></p>
+      </div>
+    <% end %>
   </div>
 
-</div>
-<div class="col-md-3">
-  <% @campaign.reward_levels.each do |reward_level| %>
-    <div class="well">
-      <h3><%= number_to_currency(reward_level.amount) %></h3>
-      <p><%= reward_level.description %></p>
-    </div>
+  <h2>Comments</h2>
+  <%= simple_form_for [@campaign, @comment] do |f| %>
+    <%= f.input :body %>
+    <%= f.submit "Save", class: "btn btn-primary" %>
   <% end %>
-</div>
-
-<h2>Comments</h2>
-<%= simple_form_for [@campaign, @comment] do |f| %>
-  <%= f.input :body %>
-  <%= f.submit "Save", class: "btn btn-primary" %>
-<% end %>
-<hr>
-<% @campaign.comments.each do |comment| %>
-  <div class="well"><%= comment.body %></div>
-<% end %>
+  <hr>
+  <% @campaign.comments.each do |comment| %>
+    <div class="well"><%= comment.body %></div>
+  <% end %>
 
 
-<script type="text/javascript">
-  $(document).ready(function(){
-    handler = Gmaps.build('Google');
-    handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
-      markers = handler.addMarkers([
-        {
-          "lat": <%= @campaign.latitude %>,
-          "lng": <%= @campaign.longitude %>,
-          "infowindow": "hello!"
-        }
-      ]);
-      handler.bounds.extendWith(markers);
-      handler.fitMapToBounds();
+  <script type="text/javascript">
+    $(document).ready(function(){
+      handler = Gmaps.build('Google');
+      handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
+        markers = handler.addMarkers([
+          {
+            "lat": <%= @campaign.latitude %>,
+            "lng": <%= @campaign.longitude %>,
+            "infowindow": "hello!"
+          }
+        ]);
+        handler.bounds.extendWith(markers);
+        handler.fitMapToBounds();
+      });
     });
-  });
-</script>
-
+  </script>
+<% end %>
 
 

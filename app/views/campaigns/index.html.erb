@@ -1,7 +1,21 @@
 <%= link_to "New Campaign", new_campaign_path, class: "btn btn-primary" %>
+
+<% cache "recent_campaigns", skip_digest: true, expire_in: 1.day do %>
+  <% @recent_campaigns.each do |campaign| %>
+    <div class="col-md-4">
+      <div class="well">
+        <h2><%= link_to campaign.title, campaign %></h2>
+        <p><%= campaign.description.truncate(140) %></p>
+      </div>
+    </div>
+  <% end %>
+<% end %>
+
 <% @campaigns.each do |campaign| %>
-  <div class="well">
-  <%= link_to campaign.title, campaign %>
-  <p><%= campaign.description.truncate(140) %></p>
-  </div>
+  <% cache campaign do %>
+    <div class="well">
+    <%= link_to campaign.title, campaign %>
+    <p><%= campaign.description.truncate(140) %></p>
+    </div>
+  <% end %>
 <% end %>
