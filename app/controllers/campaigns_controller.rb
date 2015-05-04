@@ -58,7 +58,8 @@ class CampaignsController < ApplicationController
   private
 
   def campaign_params
-    params.require(:campaign).permit(:title, :description, :goal, :ends_on,
+    params.require(:campaign).permit(:title, :description, :goal, 
+                                      :ends_on, :address,
                                       {reward_levels_attributes: 
                                           reward_level_attributes_params})
   end

@@ -6,6 +6,9 @@ class Campaign < ActiveRecord::Base
 
   has_many :reward_levels, dependent: :destroy
 
+  geocoded_by :address
+  after_validation :geocode
+
   # this allows creating reward_levels at the same time
   # you create a campaign. reject_if option will make it so
   # if the reward_level attributes are empty it will just igonore it

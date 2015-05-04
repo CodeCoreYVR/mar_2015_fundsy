@@ -11,6 +11,9 @@ class User < ActiveRecord::Base
   validates :email, presence: true, uniqueness: true, email: true
   validates :first_name, presence: true
 
+  geocoded_by :address
+  after_validation :geocode
+
   def full_name
     "#{first_name} #{last_name}".strip
   end
