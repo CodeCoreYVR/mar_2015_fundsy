@@ -2,19 +2,15 @@
   <div class="col-md-9">
     <h1><%= @campaign.title %></h1>
     <p><%= @campaign.description %></p>
-    <p>Goal: <%= number_to_currency(@campaign.goal) %></p>
-    <p>Ends On: <%= @campaign.ends_on.strftime("%Y-%b-%d") %></p>
-    <% if can? :edit, @campaign %>
-      <%= link_to "Edit", edit_campaign_path(@campaign), class: "btn btn-info" %>
-    <% end %>
+    <p>Goal: <%= @campaign.goal %></p>
+    <p>Ends On: <%= @campaign.ends_on %></p>
 
-    <% if can? :destroy, @campaign %>
-      <%= link_to "Delete", @campaign, class: "btn btn-danger", method: :delete, data: {confirm: "Are you sure?"} %>
-    <% end %>
+    <%= @campaign.edit_button %>
+    
+    <%= @campaign.delete_button %>
 
-    <% if (can? :publish, @campaign) && @campaign.draft? %>
-      <%= link_to "Publish", campaign_publishings_path(@campaign), class: "btn btn-info", method: :post, data: {confirm: "Are you sure you want to publish this campaign?"} %>
-    <% end %>
+    <%= @campaign.publish_button %>
+
 
     <div style='width: 800px;'>
       <div id="map" style='width: 800px; height: 400px;'></div>

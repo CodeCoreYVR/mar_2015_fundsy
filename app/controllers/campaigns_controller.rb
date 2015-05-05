@@ -30,7 +30,8 @@ class CampaignsController < ApplicationController
 
   def show
     @campaign = Campaign.includes(:comments, :reward_levels).
-                      references(:comments, :reward_levels).find(params[:id])
+                      references(:comments, :reward_levels).
+                      find(params[:id]).decorate
     @comment  = Comment.new
     respond_to do |format|
       format.html
