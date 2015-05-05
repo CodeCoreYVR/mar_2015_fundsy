@@ -1,8 +1,7 @@
 FactoryGirl.define do
   factory :reward_level do
-    campaign nil
-amount 1
-description "MyText"
+    amount 100
+    description "Thank you"
   end
 
 end

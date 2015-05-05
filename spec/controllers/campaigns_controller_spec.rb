@@ -50,7 +50,9 @@ RSpec.describe CampaignsController, type: :controller do
 
       context "with valid parameters" do
         def valid_request
-          post :create, campaign: attributes_for(:campaign)
+          attributes = attributes_for(:campaign).merge({reward_levels_attributes: 
+            {"0" => attributes_for(:reward_level)}})
+          post :create, campaign: attributes
         end
 
         it "creates a new campaign in the database" do

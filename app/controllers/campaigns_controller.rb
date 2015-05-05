@@ -16,13 +16,14 @@ class CampaignsController < ApplicationController
   end
 
   def create
-    @campaign = Campaign.new campaign_params
-    @campaign.user = current_user
-    if @campaign.save
+    service = Campaigns::CreateCampaign.new(params: campaign_params,
+                                            user: current_user)
+    if service.call
       expire_fragment("recent_campaigns")
       flash[:notice] = "Campaign Created!"
-      redirect_to campaign_path(@campaign)
+      redirect_to campaign_path(service.campaign)
     else
+      @campaign = service.campaign
       flash[:alert] = "Campaign not created!"
       render :new
     end

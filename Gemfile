@@ -26,7 +26,7 @@ gem 'aasm'
 gem "geocoder"
 gem 'gmaps4rails'
 gem "underscore-rails"
-
+gem "virtus"
 
 gem 'draper'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks

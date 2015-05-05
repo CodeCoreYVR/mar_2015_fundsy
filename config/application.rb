@@ -36,6 +36,8 @@ module Fundsy
         Dir[Rails.root.join("app", "validators", "*").to_s]
     config.autoload_paths +=
         Dir[Rails.root.join("app", "decorators", "*").to_s]
+    config.autoload_paths +=
+        Dir[Rails.root.join("app", "services", "*").to_s]
 
     # this will allow the app to accept AJAX requests
     # from any other website with Http verbs: :get, :post, :options

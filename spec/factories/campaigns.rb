@@ -9,6 +9,7 @@ FactoryGirl.define do
     title Faker::Company.bs
     description Faker::Lorem.paragraph
     goal 1000000
+    after(:build) {|c| c.reward_levels << FactoryGirl.create(:reward_level) }
   end
 
 end
