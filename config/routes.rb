@@ -7,6 +7,14 @@ Rails.application.routes.draw do
   end
 
   get 'welcome/index'
+
+  # urls will be like
+  # /api/v1/campaigns
+  namespace :api, defaults: {format: :json} do
+    namespace :v1 do
+      resources :campaigns
+    end
+  end
   
   resources :discussions do
     resources :comments, only: [:create]

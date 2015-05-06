@@ -14,8 +14,18 @@ class User < ActiveRecord::Base
   geocoded_by :address
   after_validation :geocode
 
+  before_create :generate_api_key
+
   def full_name
     "#{first_name} #{last_name}".strip
+  end
+
+  private
+
+  def generate_api_key
+    begin
+      self.api_key = SecureRandom.hex
+    end while User.exists?(api_key: api_key)
   end
 
 end
