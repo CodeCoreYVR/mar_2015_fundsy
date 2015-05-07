@@ -1,6 +1,15 @@
 <h1>Pay for your pledge</h1>
 
+<% if current_user.stripe_customer_token.present? %>
+  <p>**** **** **** <%= current_user.stripe_last4 %></p>
+  <%= simple_form_for "", url: pledge_payments_path(@pledge) do |f| %>
+    <%= f.input :pay_with_existing, as: :hidden, input_html: {value: true} %>
+    <%= f.submit "Pay with your #{current_user.stripe_card_type}" %>
+  <% end %>
+<% end %>
+
 <%= simple_form_for "", url: pledge_payments_path(@pledge), html: {id: "token-form"} do |f| %>
+  <%= f.input :pay_with_existing, as: :hidden, input_html: {value: false} %>
   <%= f.input :stripe_token, as: :hidden %>
 <% end %>
 

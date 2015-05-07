@@ -9,7 +9,8 @@ class PaymentsController < ApplicationController
   def create
     service = Payments::CreatePayment.new(user: current_user,
                                           stripe_token: params[:stripe_token],
-                                          pledge: @pledge)
+                                          pledge: @pledge,
+                                          pay_with_existing: params[:pay_with_existing])
     if service.call
       redirect_to @pledge.campaign, notice: "Thank you for Pledging"
     else

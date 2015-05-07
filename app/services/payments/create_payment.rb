@@ -5,11 +5,13 @@ class Payments::CreatePayment
   attribute :stripe_token, String
   attribute :user, User
   attribute :pledge, Pledge
+  attribute :pay_with_existing, Boolean
 
   def call
     ActiveRecord::Base.transaction do
       begin
-        update_user_info && charge && update_pledge
+        update_user_info unless pay_with_existing
+        charge && update_pledge
       rescue => e
         Rails.logger.info "Exception happened #{e.message}"
         raise ActiveRecord::Rollback.new
