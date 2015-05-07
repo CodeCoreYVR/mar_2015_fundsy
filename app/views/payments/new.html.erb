@@ -1,0 +1,20 @@
+<h1>Pay for your pledge</h1>
+
+<%= simple_form_for "", url: pledge_payments_path(@pledge), html: {id: "token-form"} do |f| %>
+  <%= f.input :stripe_token, as: :hidden %>
+<% end %>
+
+<div id="stripe-errors"></div>
+<%= simple_form_for "", html: {id: "stripe-form"} do |f| %>
+  <%= f.input :card_number %>
+  <div class="form-group">
+    <%= f.label :expiry_date %>
+    <%= select_month nil, {add_month_number: true}, {class: "form-control"} %>
+    <%= select_year nil, {start_year: Date.today.year, end_year: (Date.today.year + 7)}, {class: "form-control"} %>
+  </div>
+  <%= f.input :cvc %>
+  <%= f.submit "Submit", class: "btn btn-primary" %>
+<% end %>
+<noscript>
+  Javascript must be enabled on your browser for the payment to work. 
+</noscript>

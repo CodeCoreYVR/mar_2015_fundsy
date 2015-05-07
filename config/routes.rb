@@ -26,6 +26,10 @@ Rails.application.routes.draw do
     resources :publishings, only: [:create]
   end
 
+  resources :pledges, only: [] do
+    resources :payments, only: [:new, :create]
+  end
+
   resources :users, only: [:new, :create]
   resources :sessions, only: [:new, :create] do
     # we do this because we don't need an id to log

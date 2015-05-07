@@ -5,10 +5,14 @@
     <p>Goal: <%= @campaign.goal %></p>
     <p>Ends On: <%= @campaign.ends_on %></p>
 
-    <%= @campaign.edit_button %>
-    
-    <%= @campaign.delete_button %>
 
+    <%= simple_form_for [@campaign, @pledge] do |f| %>
+      <%= f.input :amount %>
+      <%= f.submit "Pledge" %>
+    <% end %>
+
+    <%= @campaign.edit_button %>
+    <%= @campaign.delete_button %>
     <%= @campaign.publish_button %>
 
 

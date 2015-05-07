@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150505205053) do
+ActiveRecord::Schema.define(version: 20150507164659) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -78,8 +78,10 @@ ActiveRecord::Schema.define(version: 20150505205053) do
     t.integer  "amount"
     t.integer  "user_id"
     t.integer  "campaign_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.string   "aasm_state"
+    t.string   "stripe_txn_id"
   end
 
   add_index "pledges", ["campaign_id"], name: "index_pledges_on_campaign_id", using: :btree
@@ -100,12 +102,15 @@ ActiveRecord::Schema.define(version: 20150505205053) do
     t.string   "last_name"
     t.string   "email"
     t.string   "password_digest"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
     t.string   "address"
     t.float    "longitude"
     t.float    "latitude"
     t.string   "api_key"
+    t.string   "stripe_customer_token"
+    t.string   "stripe_last4"
+    t.string   "stripe_card_type"
   end
 
   add_index "users", ["api_key"], name: "index_users_on_api_key", using: :btree

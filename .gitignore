@@ -9,5 +9,7 @@
 
 # Ignore all logfiles and tempfiles.
 /log/*
+config/initializers/api_keys.rb
+
 !/log/.keep
 /tmp

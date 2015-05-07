@@ -34,6 +34,7 @@ class CampaignsController < ApplicationController
                       references(:comments, :reward_levels).
                       find(params[:id]).decorate
     @comment  = Comment.new
+    @pledge   = Pledge.new
     respond_to do |format|
       format.html
       format.json {render json: {campaign:      @campaign, 

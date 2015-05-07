@@ -7,7 +7,7 @@ class PledgesController < ApplicationController
     @pledge.user     = current_user
     @pledge.campaign = @campaign
     if @pledge.save
-      redirect_to @campaign, notice: "Pledge created"
+      redirect_to new_pledge_payment_path(@pledge), notice: "Pledge created"
     else
       flash[:alert] = "Pledge not created"
       render "campaigns/show"
